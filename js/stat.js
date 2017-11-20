@@ -42,31 +42,35 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillText('Ура вы победили!', CloudParams.left + indent, CloudParams.top + textParams.indent);
   ctx.fillText('Список результатов:', CloudParams.left + indent, CloudParams.top + textParams.indent + textParams.fontSize);
 
-  function getRandomInt(min, max) {
+  var getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-  }
+  };
 
-  for (var i = 0; i < times.length; i++) {
+  // var getColumnParam = function () {
+  //   for (var k = 0; k < times.length; k++) {
+  //     var ColumnPosition = initialX + (HistogramParams.columnWidth + HistogramParams.indent) * k;
+  //     var ColumnDirection = initialY - times[k] * step;
+  //     var ColumnWidth = HistogramParams.columnWidth;
+  //     var ColumnHeight = times[k] * step;
+  //     var ColumnArray = [ColumnPosition, ColumnDirection, ColumnWidth, ColumnHeight];
+  //   }
+  //   return ColumnArray;
+  // };
+
+  var drawColumn = function (name, time) {
     // Определяем цвет колонки
-    ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(43, 92, 252, 0.' + getRandomInt(1, 9) + ')';
-
-    var getColumnParam = function () {
-      for (var k = 0; k < times.length; k++) {
-        var ColumnPositoin = initialX + (HistogramParams.columnWidth + HistogramParams.indent) * k;
-        var ColumnDirection = initialY - times[k] * step;
-        var ColumnWidth = HistogramParams.columnWidth;
-        var ColumnHeight = times[k] * step;
-        var ColumnArray = [ColumnPositoin, ColumnDirection, ColumnWidth, ColumnHeight];
-      }
-      return ColumnArray;
-    };
-    // Рисуем колонки для гистограммы
-    ctx.fillRect(getColumnParam());
+    ctx.fillStyle = name === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(43, 92, 252, 0.' + getRandomInt(1, 9) + ')';
+    // Рисуем колонку
+    ctx.fillRect(initialX + (HistogramParams.columnWidth + indent) * i, initialY - time * step, HistogramParams.columnWidth, time * step);
 
     ctx.fillStyle = '#000';
+    // Вставляем имя и время прохождения
+    ctx.fillText(name, initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY + textParams.indent);
+    ctx.fillText(time.toFixed(), initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - time * step - textParams.indent * 2);
+  };
 
-    // Вставляем имена и время прохождения
-    ctx.fillText(names[i], initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY + textParams.indent);
-    ctx.fillText(times[i].toFixed(), initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step - textParams.indent * 2);
+  for (var i = 0; i < times.length; i++) {
+    drawColumn(names[i], times[i]);
   }
+
 };
