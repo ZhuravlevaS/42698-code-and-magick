@@ -1,41 +1,61 @@
 'use strict';
 
 window.renderStatistics = function (ctx, names, times) {
-  var histogramHeight = 150; // px
-  var cloudWidth = 420; // px
-  var cloudHeight = 270; // px
-  var indentShadow = 10; // px
-  var marginLeft = 100; // px
-  var marginTop = 10; // px
-  var step = histogramHeight / Math.max.apply(null, times); // px
-  var columnWidth = 40; // px
+
+  var CloudParams = {
+    width: 420, // px
+    height: 270, // px
+    left: 100, // px
+    top: 10, // px
+    indentShadow: 10 // px
+  }
+
+  var HistogramParams = {
+    height: 150,// px
+    columnWidth: 40,// px
+    indent: 50 // px
+  }
+
+  var textParams = {
+    fontSize: 16, // px
+    fontFamily: 'PT Mono',
+    indent: 10 // px
+  }
+
+  var step = HistogramParams.height / Math.max.apply(null, times); // px
   var indent = 50; // px
-  var initialX = 160; // px;
-  var initialY = 250; // px
-  var lineHeight = 10; // px
+  var initialX = CloudParams.left + indent; // px;
+  var initialY = CloudParams.height - CloudParams.indentShadow - textParams.indent; // px
 
+  // Рисуем тень облака
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(marginLeft + indentShadow, marginTop + indentShadow, cloudWidth, cloudHeight);
-  ctx.fillStyle = 'white';
-  ctx.fillRect(marginLeft, marginTop, cloudWidth, cloudHeight);
-  ctx.fillStyle = '#000';
-  ctx.font = '16px PT Mono';
-  ctx.textBaseline = 'hanging';
-  ctx.fillText('Ура вы победили!', marginLeft + indent, marginTop + lineHeight);
-  ctx.fillText('Список результатов:', marginLeft + indent, marginTop + lineHeight * 3);
+  ctx.fillRect(CloudParams.left + CloudParams.indentShadow, CloudParams.top + CloudParams.indentShadow, CloudParams.width, CloudParams.height);
 
+  // Рисуем само облако
+  ctx.fillStyle = 'white';
+  ctx.fillRect(CloudParams.left, CloudParams.top, CloudParams.width, CloudParams.height);
+
+  // Вставляем текст
+  ctx.fillStyle = '#000';
+  ctx.font = textParams.fontSize + 'px' + textParams.fontFamily;
+  ctx.textBaseline = 'hanging';
+  ctx.fillText('Ура вы победили!', CloudParams.left + indent, CloudParams.top + textParams.indent);
+  ctx.fillText('Список результатов:', CloudParams.left + indent, CloudParams.top + textParams.indent + textParams.fontSize);
+  
   function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
   for (var i = 0; i < times.length; i++) {
-    times[i] = times[i].toFixed();
+    // Определяем цвет колонки
     ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(43, 92, 252, 0.' + getRandomInt(1, 9) + ')';
 
-    ctx.fillRect(initialX + (columnWidth + indent) * i, initialY - times[i] * step, columnWidth, times[i] * step);
+    // Рисуем колонки для гистограммы
+    ctx.fillRect(initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step, HistogramParams.columnWidth, times[i] * step);
     ctx.fillStyle = '#000';
-    ctx.fillText(names[i], initialX + (columnWidth + indent) * i, initialY + lineHeight);
-    ctx.fillText(times[i], initialX + (columnWidth + indent) * i, initialY - times[i] * step - lineHeight * 2);
+    
+    // Вставляем имена и время прохождения
+    ctx.fillText(names[i], initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY + textParams.indent);
+    ctx.fillText(times[i].toFixed(), initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step - textParams.indent * 2);
   }
 };
-
