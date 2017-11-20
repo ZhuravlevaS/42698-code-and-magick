@@ -2,6 +2,11 @@
 
 window.renderStatistics = function (ctx, names, times) {
   var histogramHeight = 150; // px
+  var cloudWidth = 420; // px
+  var cloudHeight = 270; // px
+  var indentShadow = 10; // px
+  var marginLeft = 100; // px
+  var marginTop = 10; // px
   var step = histogramHeight / Math.max.apply(null, times); // px
   var columnWidth = 40; // px
   var indent = 50; // px
@@ -10,14 +15,14 @@ window.renderStatistics = function (ctx, names, times) {
   var lineHeight = 10; // px
 
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(110, 20, 420, 270);
+  ctx.fillRect(marginLeft + indentShadow, marginTop + indentShadow, cloudWidth, cloudHeight);
   ctx.fillStyle = 'white';
-  ctx.fillRect(100, 10, 420, 270);
+  ctx.fillRect(marginLeft, marginTop, cloudWidth, cloudHeight);
   ctx.fillStyle = '#000';
   ctx.font = '16px PT Mono';
   ctx.textBaseline = 'hanging';
-  ctx.fillText('Ура вы победили!', 150, 25);
-  ctx.fillText('Список результатов:', 150, 45);
+  ctx.fillText('Ура вы победили!', marginLeft + indent, marginTop + lineHeight);
+  ctx.fillText('Список результатов:', marginLeft + indent, marginTop + lineHeight * 3);
 
   function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
