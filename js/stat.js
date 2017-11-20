@@ -8,19 +8,19 @@ window.renderStatistics = function (ctx, names, times) {
     left: 100, // px
     top: 10, // px
     indentShadow: 10 // px
-  }
+  };
 
   var HistogramParams = {
-    height: 150,// px
-    columnWidth: 40,// px
+    height: 150, // px
+    columnWidth: 40, // px
     indent: 50 // px
-  }
+  };
 
   var textParams = {
     fontSize: 16, // px
     fontFamily: 'PT Mono',
     indent: 10 // px
-  }
+  };
 
   var step = HistogramParams.height / Math.max.apply(null, times); // px
   var indent = 50; // px
@@ -41,7 +41,7 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.textBaseline = 'hanging';
   ctx.fillText('Ура вы победили!', CloudParams.left + indent, CloudParams.top + textParams.indent);
   ctx.fillText('Список результатов:', CloudParams.left + indent, CloudParams.top + textParams.indent + textParams.fontSize);
-  
+
   function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
@@ -53,7 +53,7 @@ window.renderStatistics = function (ctx, names, times) {
     // Рисуем колонки для гистограммы
     ctx.fillRect(initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step, HistogramParams.columnWidth, times[i] * step);
     ctx.fillStyle = '#000';
-    
+
     // Вставляем имена и время прохождения
     ctx.fillText(names[i], initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY + textParams.indent);
     ctx.fillText(times[i].toFixed(), initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step - textParams.indent * 2);
