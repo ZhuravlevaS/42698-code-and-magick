@@ -50,8 +50,19 @@ window.renderStatistics = function (ctx, names, times) {
     // Определяем цвет колонки
     ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(43, 92, 252, 0.' + getRandomInt(1, 9) + ')';
 
+    var getColumnParam = function () {
+      for (var k = 0; k < times.length; k++) {
+        var ColumnPositoin = initialX + (HistogramParams.columnWidth + HistogramParams.indent) * k;
+        var ColumnDirection = initialY - times[k] * step;
+        var ColumnWidth = HistogramParams.columnWidth;
+        var ColumnHeight = times[k] * step;
+        var ColumnArray = [ColumnPositoin, ColumnDirection, ColumnWidth, ColumnHeight];
+      }
+      return ColumnArray;
+    };
     // Рисуем колонки для гистограммы
-    ctx.fillRect(initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - times[i] * step, HistogramParams.columnWidth, times[i] * step);
+    ctx.fillRect(getColumnParam());
+
     ctx.fillStyle = '#000';
 
     // Вставляем имена и время прохождения
