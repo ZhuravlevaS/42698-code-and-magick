@@ -46,18 +46,7 @@ window.renderStatistics = function (ctx, names, times) {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  // var getColumnParam = function () {
-  //   for (var k = 0; k < times.length; k++) {
-  //     var ColumnPosition = initialX + (HistogramParams.columnWidth + HistogramParams.indent) * k;
-  //     var ColumnDirection = initialY - times[k] * step;
-  //     var ColumnWidth = HistogramParams.columnWidth;
-  //     var ColumnHeight = times[k] * step;
-  //     var ColumnArray = [ColumnPosition, ColumnDirection, ColumnWidth, ColumnHeight];
-  //   }
-  //   return ColumnArray;
-  // };
-
-  var drawColumn = function (name, time) {
+  var drawColumn = function (name, time, i) {
     // Определяем цвет колонки
     ctx.fillStyle = name === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(43, 92, 252, 0.' + getRandomInt(1, 9) + ')';
     // Рисуем колонку
@@ -69,8 +58,7 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillText(time.toFixed(), initialX + (HistogramParams.columnWidth + HistogramParams.indent) * i, initialY - time * step - textParams.indent * 2);
   };
 
-  for (var i = 0; i < times.length; i++) {
-    drawColumn(names[i], times[i]);
-  }
-
+  times.forEach(function (time, i) {
+    return drawColumn(names[i], time, i);
+  });
 };
