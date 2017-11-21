@@ -59,6 +59,6 @@ window.renderStatistics = function (ctx, names, times) {
   };
 
   times.forEach(function (time, i) {
-    return drawColumn(names[i], time, i);
+    drawColumn(names[i], time, i);
   });
 };
